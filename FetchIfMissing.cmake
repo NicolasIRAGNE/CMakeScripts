@@ -8,6 +8,18 @@
 # For each dependency, it will define the following variables:
 # - <dependency>_FETCHED if the file is not found and fetched
 # If the dependency has been fetched, add it to the variable FETCHED_TARGETS.
+# 
+# A typical usage would be:
+#
+# FetchIfMissing(json
+#    GIT_REPOSITORY https://github.com/NicolasIRAGNE/nlohmann_json_cmake_fetchcontent
+#    GIT_TAG nicolasiragne/interface
+# )
+# FetchIfMissing(SDL2
+#   GIT_REPOSITORY "https://github.com/libsdl-org/SDL/"
+#   GIT_TAG release-2.0.18
+# )
+# FetchContent_MakeAvailable(${FETCHED_TARGETS})
 # -----
 ################################################################################
 
