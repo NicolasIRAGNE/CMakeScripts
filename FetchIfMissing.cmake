@@ -12,8 +12,8 @@
 # A typical usage would be:
 #
 # FetchIfMissing(json
-#    GIT_REPOSITORY https://github.com/NicolasIRAGNE/nlohmann_json_cmake_fetchcontent
-#    GIT_TAG nicolasiragne/interface
+#    GIT_REPOSITORY https://github.com/nlohmann/json.git
+#    GIT_TAG v3.7.3
 # )
 # FetchIfMissing(SDL2
 #   GIT_REPOSITORY "https://github.com/libsdl-org/SDL/"
@@ -35,8 +35,8 @@ function(FetchIfMissing TARGET)
         message(STATUS "${TARGET} not found in the system. Downloading...")
         FetchContent_Declare(${ARGV})
         if (NOT DEFINED ${TARGET}_FETCHED)
-            set(${TARGET}_FETCHED ON CACHE INTERNAL "${TARGET} was fetched from an external url")
-            set(FETCHED_TARGETS ${FETCHED_TARGETS} ${TARGET} CACHE INTERNAL "List of fetched targets")
+            set(${TARGET}_FETCHED ON PARENT_SCOPE)
+            set(FETCHED_TARGETS "${FETCHED_TARGETS};${TARGET}" PARENT_SCOPE)
         endif()
     else()
         message(STATUS "${TARGET} found in the system. Skipping...")
