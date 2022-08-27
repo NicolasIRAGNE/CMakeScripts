@@ -13,6 +13,11 @@ function(create_target TARGET)
     NAMES ${TARGET}
     PATHS ${TensorRT_DIR}/lib)
   
+  find_path(
+    ${TARGET}_INCLUDE_DIRS
+    NAMES NvInfer.h
+    HINTS ${TensorRT_DIR}/include)
+
   set(TARGET_FULL ${${TARGET}_LIBRARY})
   message(STATUS "Found ${TARGET} at ${TARGET_FULL}")
   string(FIND ${TARGET_FULL} "NOTFOUND" _VAR)
@@ -29,13 +34,13 @@ function(create_target TARGET)
           PROPERTIES
             IMPORTED_LOCATION "${TARGET_PATH}/${TARGET_FILE_NAME}.dll"
             IMPORTED_IMPLIB "${TARGET_PATH}/${TARGET_FILE_NAME}.lib"
-            INTERFACE_INCLUDE_DIRECTORIES "${TensorRT_DIR}/include")
+            INTERFACE_INCLUDE_DIRECTORIES "${${TARGET}_INCLUDE_DIRS}")
       else()
         set_target_properties(trt::${TARGET}
           PROPERTIES
             IMPORTED_LOCATION ${TARGET_REALPATH}
             IMPORTED_SONAME ${TARGET_SONAME}
-            INTERFACE_INCLUDE_DIRECTORIES "${TensorRT_DIR}/include"
+            INTERFACE_INCLUDE_DIRECTORIES "${${TARGET}_INCLUDE_DIRS}"
           )
       endif(WIN32)
       install(IMPORTED_RUNTIME_ARTIFACTS trt::${TARGET} RUNTIME_DEPENDENCY_SET trt_set COMPONENT ${TARGET})
